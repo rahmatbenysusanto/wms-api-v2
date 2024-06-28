@@ -9,9 +9,10 @@ import (
 
 type UserRepository interface {
 	FindAll(ctx *fiber.Ctx, tx *sql.Tx) ([]*types.FindUser, error)
-	FindByID(ctx *fiber.Ctx, tx *sql.Tx, id int64) (*types.FindUser, error)
+	FindByID(ctx *fiber.Ctx, tx *sql.Tx, id int) (*types.FindUser, error)
 	Save(ctx *fiber.Ctx, tx *sql.Tx, user *types.UserRequest) (int, error)
 	Update(ctx *fiber.Ctx, tx *sql.Tx, user *types.UserUpdateRequest) error
+	Delete(ctx *fiber.Ctx, tx *sql.Tx, id int) error
 }
 
 type UserRepositoryImpl struct{}
@@ -51,7 +52,7 @@ func (u *UserRepositoryImpl) FindAll(ctx *fiber.Ctx, tx *sql.Tx) ([]*types.FindU
 	return users, nil
 }
 
-func (u *UserRepositoryImpl) FindByID(ctx *fiber.Ctx, tx *sql.Tx, id int64) (*types.FindUser, error) {
+func (u *UserRepositoryImpl) FindByID(ctx *fiber.Ctx, tx *sql.Tx, id int) (*types.FindUser, error) {
 	rows, err := tx.QueryContext(ctx.Context(), "SELECT id, name, email, no_hp, hak_akses, created_at FROM users WHERE id=?", id)
 	if err != nil {
 		return nil, errors.New("Error query process")
@@ -100,6 +101,15 @@ func (u *UserRepositoryImpl) Save(ctx *fiber.Ctx, tx *sql.Tx, user *types.UserRe
 func (u *UserRepositoryImpl) Update(ctx *fiber.Ctx, tx *sql.Tx, user *types.UserUpdateRequest) error {
 	SQL := "UPDATE users SET name=?, email=?, hak_akses=?, password=? WHERE id=?"
 	_, err := tx.ExecContext(ctx.Context(), SQL, user.Id)
+	if err != nil {
+		return errors.New("Error query process")
+	}
+
+	return nil
+}
+
+func (u *UserRepositoryImpl) Delete(ctx *fiber.Ctx, tx *sql.Tx, id int) error {
+	_, err := tx.ExecContext(ctx.Context(), "DELETE FROM users WHERE id=?", id)
 	if err != nil {
 		return errors.New("Error query process")
 	}
