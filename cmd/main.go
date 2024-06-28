@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"time"
 	"wms-api-v2/internal/route"
+	"wms-api-v2/pkg/database"
 )
 
 func main() {
@@ -13,6 +14,7 @@ func main() {
 		ReadTimeout:  time.Second * 10,
 	})
 
+	database.MysqlConn()
 	route.PrivateAPI(app)
 	route.PublicAPI(app)
 

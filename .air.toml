@@ -1,0 +1,38 @@
+# Config file for Air.
+
+[build]
+# You can set `cmd` to your main.go file location
+cmd = "go build -o ./tmp/main ./cmd"
+# You can set `bin` to where you want the binary to be located
+bin = "./tmp/main"
+# Set `full_bin` if you want to override `cmd` and `bin` values
+# full_bin = "sh -c 'go build -o ./tmp/main ./cmd/myapp'"
+# Set `args` if you want to pass additional arguments to your binary
+# args = ["-some-flag", "value"]
+# Uncomment `exclude_dirs` to add directories to the list of excluded ones
+# exclude_dirs = ["assets", "tmp"]
+
+[log]
+# Console log color can be one of the following: reset, bold, black, red, green, yellow, blue, magenta, cyan, white
+log_color = "cyan"
+# Console log mode can be one of the following: debug, release, error, panic, fatal, warn, trace
+log_mode = "debug"
+
+[watch]
+# Add directories to the list of watched ones
+# By default, all directories with `.go` files are watched
+# watch_dirs = ["."]
+# Uncomment `exclude_dirs` to add directories to the list of excluded ones
+exclude_dirs = ["tmp", "vendor"]
+
+# Set `include_exts` if you want to watch files with specific extensions
+include_exts = [".go", ".tpl", ".tmpl", ".html"]
+
+# Set `exclude_exts` if you want to exclude files with specific extensions
+exclude_exts = [".tmp", ".log"]
+
+# If `follow_symlink` is `true`, symbolic links will be followed
+follow_symlink = false
+
+# If `watch_delay` is greater than `0`, air will wait for it before running a new build
+watch_delay = 500 # ms
