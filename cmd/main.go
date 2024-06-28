@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"time"
+	"wms-api-v2/internal/route"
 )
 
 func main() {
@@ -12,11 +13,8 @@ func main() {
 		ReadTimeout:  time.Second * 10,
 	})
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"hello": "world",
-		})
-	})
+	route.PrivateAPI(app)
+	route.PublicAPI(app)
 
 	err := app.Listen("localhost:8000")
 	if err != nil {
